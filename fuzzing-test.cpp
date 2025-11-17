@@ -1,8 +1,29 @@
 #include "real48.hpp"
 
 #include <cstring>
-#include <print>
 #include <stdexcept>
+#include <cstdint>
+
+namespace
+{
+
+template <class T>
+bool test(const std::uint8_t* data)
+{
+    try
+    {
+        T input {};
+        std::memcpy(&input, data, sizeof(input));
+        math::Real48 r48 {input};
+        return T{r48} == input;
+    }
+    catch (const std::overflow_error& err)
+    {
+    }
+    return false;
+}
+
+}
 
 extern "C" int
 LLVMFuzzerTestOneInput(const std::uint8_t* data, std::size_t size)
@@ -12,29 +33,11 @@ LLVMFuzzerTestOneInput(const std::uint8_t* data, std::size_t size)
     }
     else if (size < sizeof(double))
     {
-        try
-        {
-            float input {};
-            std::memcpy(&input, data, sizeof(input));
-            std::println("from float: {}", input);
-            math::Real48 r48 {input};
-        }
-        catch (const std::overflow_error& err)
-        {
-        }
+        return test<float>(data);
     }
     else
     {
-        try
-        {
-            double input {};
-            std::memcpy(&input, data, sizeof(input));
-            std::println("from float: {}", input);
-            math::Real48 r48 {input};
-        }
-        catch (const std::overflow_error& err)
-        {
-        }
+        return test<double>(data);
     }
     return 0;
 }
