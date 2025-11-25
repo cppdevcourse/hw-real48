@@ -3,9 +3,11 @@
 #include <cmath>
 #include <stdexcept>
 
-namespace math {
+namespace math
+{
 
-class Real48 {
+class Real48
+{
 public:
     // constructors
     constexpr Real48();

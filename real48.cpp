@@ -3,7 +3,8 @@
 #include <cstring>
 #include <stdexcept>
 
-namespace math {
+namespace math
+{
 
 static inline void pack_bytes(uint8_t out[6], uint64_t word) {
     out[0] = static_cast<uint8_t>(word & 0xFF);
@@ -14,7 +15,8 @@ static inline void pack_bytes(uint8_t out[6], uint64_t word) {
     out[5] = static_cast<uint8_t>((word >> 40) & 0xFF);
 }
 
-Real48::Real48(const float number) {
+Real48::Real48(const float number)
+{
     if (std::isnan(number) || std::isinf(number)) {
         throw std::overflow_error("Real48: cannot represent NaN or infinity");
     }
